@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Calendar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="track-container">
+            <div class="car-showcase" id="carShowcase">
+                <!-- Cars will be added here dynamically -->
+            </div>
+        </div>
+        <div class="loading-container">
+            <img src="{{ url_for('static', filename='images/logof1.png') }}" alt="F1 Logo" class="f1-logo-img">
+            <div class="loading-text">LOADING</div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-flag-checkered"></i>
+            F1 Calendar
+        </div>
+        <ul class="nav-links">
+            <li><a href="#upcoming">Upcoming Races</a></li>
+            <li><a href="#past">Past Races</a></li>
+        </ul>
+    </nav>
+    
+    {% block content %}
+    {% endblock %}
+    
+    <footer>
+        <p>&copy; 2025 F1 Calendar. All rights reserved.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Array of all F1 car images
+            const carImages = [
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/alpine.png",
+                    alt: "Alpine"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/aston-martin.png",
+                    alt: "Aston Martin"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/ferrari.png",
+                    alt: "Ferrari"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/haas.png",
+                    alt: "Haas"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/kick-sauber.png",
+                    alt: "Kick Sauber"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/mclaren.png",
+                    alt: "McLaren"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/mercedes.png",
+                    alt: "Mercedes"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/racing-bulls.png",
+                    alt: "Racing Bulls"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/red-bull-racing.png",
+                    alt: "Red Bull Racing"
+                },
+                {
+                    src: "https://media.formula1.com/d_team_car_fallback_image.png/content/dam/fom-website/teams/2025/williams.png",
+                    alt: "Williams"
+                }
+            ];
+        
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        
+    // Shuffle cars
+    const shuffledCars = carImages.sort(() => Math.random() - 0.5);
+    const carShowcase = document.getElementById('carShowcase');
+
+    // Create car elements
+    shuffledCars.forEach(car => {
+        const carSlide = document.createElement('div');
+        carSlide.className = 'car-slide';
+        carSlide.innerHTML = `
+            <img src="${car.src}" alt="${car.alt}" class="f1-car">
+        `;
+        carShowcase.appendChild(carSlide);
+    });
+
+    const cars = document.querySelectorAll('.car-slide');
+    let currentIndex = 0;
+
+    function animateCar() {
+        if (currentIndex < cars.length) {
+            const car = cars[currentIndex];
+            car.style.display = 'block';
+            car.style.animation = 'slideRight 0.8s linear';
+            
+            car.addEventListener('animationend', () => {
+                car.style.display = 'none';
+            }, { once: true });
+
+            currentIndex++;
+        }
+    }
+
+    // Start car animations
+    const interval = setInterval(() => {
+        animateCar();
+        if (currentIndex >= cars.length) {
+            clearInterval(interval);
+        }
+    }, 700);
+
+    // End loading screen after 3 seconds
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 800);
+    }, 3000);
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all filter buttons and race cards
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const raceCards = document.querySelectorAll('.race-card');
+    
+        // Add click event listeners to filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+    
+                const filterValue = btn.getAttribute('data-filter');
+    
+                // Show/hide race cards based on filter
+                raceCards.forEach(card => {
+                    if (filterValue === 'all') {
+                        card.classList.remove('hidden');
+                    } else {
+                        const raceType = card.getAttribute('data-race-type');
+                        if (raceType === filterValue) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+        });
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for schedule toggles
+            const toggleButtons = document.querySelectorAll('.schedule-toggle');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Toggle active class on button
+                    this.classList.toggle('active');
+                    
+                    // Find and toggle schedule details
+                    const details = this.nextElementSibling;
+                    details.classList.toggle('show');
+                    
+                    // Update button text
+                    if (this.classList.contains('active')) {
+                        this.innerHTML = '<i class="fas fa-chevron-up"></i> Hide Schedule';
+                    } else {
+                        this.innerHTML = '<i class="fas fa-chevron-down"></i> View Full Schedule';
+                    }
+                });
+            });
+        });
+        </script>
+</body>
+
+</html>

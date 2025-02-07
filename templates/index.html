@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Countdown Section -->
+    {% if next_race %}
+    <div class="countdown-container">
+        <div class="next-race-info">
+            <h2>NEXT RACE: Round {{ next_race.round }}</h2>
+            <h3>{{ next_race.name }}</h3>
+            <p><i class="fas fa-map-marker-alt"></i> {{ next_race.circuit }}</p>
+        </div>
+        <div class="countdown" id="countdown">
+            <div class="time-block">
+                <span class="time" id="days">00</span>
+                <span class="label">DAYS</span>
+            </div>
+            <div class="time-block">
+                <span class="time" id="hours">00</span>
+                <span class="label">HOURS</span>
+            </div>
+            <div class="time-block">
+                <span class="time" id="minutes">00</span>
+                <span class="label">MINUTES</span>
+            </div>
+            <div class="time-block">
+                <span class="time" id="seconds">00</span>
+                <span class="label">SECONDS</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Filter Buttons -->
+    <div class="race-filters">
+        <button class="filter-btn active" data-filter="all">All Races</button>
+        <button class="filter-btn" data-filter="normal">Normal Races</button>
+        <button class="filter-btn" data-filter="sprint">Sprint Races</button>
+    </div>
+
+    <!-- Upcoming Races Section -->
+    <section id="upcoming" class="race-section">
+        <h2>Upcoming Races</h2>
+        <div class="race-grid">
+            {% for race in upcoming_races %}
+            <div class="race-card" data-race-type="{{ 'sprint' if race.sprint else 'normal' }}">
+                <div class="race-image">
+                    <img src="{{ race.image }}" alt="{{ race.name }}">
+                </div>
+                <div class="race-info">
+                    <h3>Round {{ race.round }} - {{ race.name }}</h3>
+                    <p class="race-date">{{ race.display_date }}</p>
+                    {% if race.sprint %}
+                    <p class="sprint-badge"><i class="fas fa-flag-checkered"></i> Sprint Race Weekend</p>
+                    {% endif %}
+                    <button class="schedule-toggle">
+                        <i class="fas fa-chevron-down"></i> View Full Schedule
+                    </button>
+                    <div class="schedule-details">
+                        {% if race.sprint %}
+                            <!-- Sprint Race Weekend Format -->
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.practice1.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Practice 1</span>
+                                    <span class="session-time">{{ race.schedule.practice1.time }}</span>
+                                </div>
+                                <div class="session">
+                                    <span class="session-name">Sprint Qualifying</span>
+                                    <span class="session-time">{{ race.schedule.sprint_qualifying.time }}</span>
+                                </div>
+                            </div>  
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.race.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Race</span>
+                                    <span class="session-time">{{ race.schedule.race.time }}</span>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.sprint.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Qualifying</span>
+                                    <span class="session-time">{{ race.schedule.qualifying.time }}</span>
+                                </div>
+                                <div class="session">
+                                    <span class="session-name">Sprint</span>
+                                    <span class="session-time">{{ race.schedule.sprint.time }}</span>
+                                </div>
+                            </div>
+                            
+                        {% else %}
+                            <!-- Normal Race Weekend Format -->
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.race.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Race</span>
+                                    <span class="session-time">{{ race.schedule.race.time }}</span>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.qualifying.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Qualifying</span>
+                                    <span class="session-time">{{ race.schedule.qualifying.time }}</span>
+                                </div>
+                                <div class="session">
+                                    <span class="session-name">Practice 3</span>
+                                    <span class="session-time">{{ race.schedule.practice3.time }}</span>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.practice1.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Practice 1</span>
+                                    <span class="session-time">{{ race.schedule.practice1.time }}</span>
+                                </div>
+                                <div class="session">
+                                    <span class="session-name">Practice 2</span>
+                                    <span class="session-time">{{ race.schedule.practice2.time }}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Past Races Section -->
+    <section id="past" class="race-section">
+        <h2>Past Races</h2>
+        <div class="race-grid">
+            {% for race in past_races %}
+            <div class="race-card past" data-race-type="{{ 'sprint' if race.sprint else 'normal' }}">
+                <div class="race-image">
+                    <img src="{{ race.image }}" alt="{{ race.name }}">
+                </div>
+                <div class="race-info">
+                    <h3>Round {{ race.round }} - {{ race.name }}</h3>
+                    <p class="race-date">{{ race.date }} - {{ race.end_date }}</p>
+                    {% if race.sprint %}
+                    <p class="sprint-badge"><i class="fas fa-flag-checkered"></i> Sprint Race Weekend</p>
+                    {% endif %}
+                    <button class="schedule-toggle">
+                        <i class="fas fa-chevron-down"></i> View Results
+                    </button>
+                    <div class="schedule-details">
+                        <!-- Add race results here when available -->
+                        <div class="results-section">
+                            <h4>Race Results</h4>
+                            {% if race.results %}
+                            <div class="podium">
+                                {% for position in race.results.podium %}
+                                <div class="position-{{ position.position }}">
+                                    <span class="position">{{ position.position }}</span>
+                                    <span class="driver">{{ position.driver }}</span>
+                                    <span class="team">{{ position.team }}</span>
+                                    <span class="time">{{ position.time }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p>Results pending...</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if next_race %}
+        // Get the race date and time from the next race
+        const raceDate = "{{ next_race.schedule.race.calc_date }} {{ next_race.schedule.race.time.split(' - ')[0] }}";
+        const raceDateTime = new Date(raceDate);
+    
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = raceDateTime.getTime() - now;
+    
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            // Update the countdown elements
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    
+            if (distance < 0) {
+                location.reload(); // Refresh page when countdown reaches zero
+            }
+        }
+    
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+        {% endif %}
+    });
+    </script>
+{% endblock %}
