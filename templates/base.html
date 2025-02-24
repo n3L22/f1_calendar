@@ -141,35 +141,32 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get all filter buttons and race cards
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const raceCards = document.querySelectorAll('.race-card');
+        {% if next_event %}
+        // Get next event datetime (could be testing or race)
+        const nextEventDatetime = new Date("{{ next_event.datetime.isoformat() }}");
     
-        // Add click event listeners to filter buttons
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                btn.classList.add('active');
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = nextEventDatetime.getTime() - now;
     
-                const filterValue = btn.getAttribute('data-filter');
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
-                // Show/hide race cards based on filter
-                raceCards.forEach(card => {
-                    if (filterValue === 'all') {
-                        card.classList.remove('hidden');
-                    } else {
-                        const raceType = card.getAttribute('data-race-type');
-                        if (raceType === filterValue) {
-                            card.classList.remove('hidden');
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    
+            if (distance < 0) {
+                location.reload(); // Refresh page when countdown reaches zero
+            }
+        }
+    
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        {% endif %}
     });
     </script>
     <script>

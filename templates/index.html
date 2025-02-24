@@ -3,33 +3,78 @@
 {% block content %}
 <div class="container">
     <!-- Countdown Section -->
-    {% if next_race %}
-    <div class="countdown-container">
-        <div class="next-race-info">
-            <h2>NEXT RACE: Round {{ next_race.round }}</h2>
-            <h3>{{ next_race.name }}</h3>
-            <p><i class="fas fa-map-marker-alt"></i> {{ next_race.circuit }}</p>
+    {% if next_event %}
+<div class="countdown-container">
+    <div class="next-race-info">
+        {% if next_event.type == 'race' %}
+            <h2>NEXT RACE: Round {{ next_event.round }}</h2>
+            <h3>{{ next_event.name }}</h3>
+            <p><i class="fas fa-map-marker-alt"></i> {{ next_event.circuit }}</p>
+        {% else %}
+            <h2>NEXT EVENT: PRE-SEASON TESTING</h2>
+            <h3>{{ next_event.name }}</h3>
+            <p><i class="fas fa-map-marker-alt"></i> {{ next_event.location }}</p>
+            <p>{{ next_event.schedule[next_event.next_day].date }} - Day {{ next_event.next_day[-1] }}</p>
+        {% endif %}
+    </div>
+    <div class="countdown" id="countdown">
+        <div class="time-block">
+            <span class="time" id="days">00</span>
+            <span class="label">DAY(S)</span>
         </div>
-        <div class="countdown" id="countdown">
-            <div class="time-block">
-                <span class="time" id="days">00</span>
-                <span class="label">DAYS</span>
-            </div>
-            <div class="time-block">
-                <span class="time" id="hours">00</span>
-                <span class="label">HOURS</span>
-            </div>
-            <div class="time-block">
-                <span class="time" id="minutes">00</span>
-                <span class="label">MINUTES</span>
-            </div>
-            <div class="time-block">
-                <span class="time" id="seconds">00</span>
-                <span class="label">SECONDS</span>
+        <div class="time-block">
+            <span class="time" id="hours">00</span>
+            <span class="label">HOUR(S)</span>
+        </div>
+        <div class="time-block">
+            <span class="time" id="minutes">00</span>
+            <span class="label">MINUTE(S)</span>
+        </div>
+        <div class="time-block">
+            <span class="time" id="seconds">00</span>
+            <span class="label">SECOND(S)</span>
+        </div>
+    </div>
+</div>
+{% endif %}
+    <!-- Pre-season Testing Section -->
+<section id="testing" class="testing-section">
+    <h2>Pre-Season Testing</h2>
+    <div class="testing-card">
+        <div class="testing-image">
+            <img src="{{ testing_schedule.image }}" alt="{{ testing_schedule.name }}">
+        </div>
+        <div class="testing-info">
+            <h3>{{ testing_schedule.name }}</h3>
+            <p class="testing-date">{{ testing_schedule.display_date }}</p>
+            <p><i class="fas fa-map-marker-alt"></i> {{ testing_schedule.location }}</p>
+            <div class="testing-schedule">
+                <div class="test-day">
+                    <div class="day-header">{{ testing_schedule.schedule.day1.date }}</div>
+                    <div class="session">
+                        <span class="session-name">Day 1</span>
+                        <span class="session-time">{{ testing_schedule.schedule.day1.time }}</span>
+                    </div>
+                </div>
+                <div class="test-day">
+                    <div class="day-header">{{ testing_schedule.schedule.day2.date }}</div>
+                    <div class="session">
+                        <span class="session-name">Day 2</span>
+                        <span class="session-time">{{ testing_schedule.schedule.day2.time }}</span>
+                    </div>
+                </div>
+                <div class="test-day">
+                    <div class="day-header">{{ testing_schedule.schedule.day3.date }}</div>
+                    <div class="session">
+                        <span class="session-name">Day 3</span>
+                        <span class="session-time">{{ testing_schedule.schedule.day3.time }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {% endif %}
+</section>
+
 
     <!-- Filter Buttons -->
     <div class="race-filters">
@@ -37,6 +82,8 @@
         <button class="filter-btn" data-filter="normal">Normal Races</button>
         <button class="filter-btn" data-filter="sprint">Sprint Races</button>
     </div>
+
+
 
     <!-- Upcoming Races Section -->
     <section id="upcoming" class="race-section">
@@ -70,13 +117,7 @@
                                     <span class="session-time">{{ race.schedule.sprint_qualifying.time }}</span>
                                 </div>
                             </div>  
-                            <div class="schedule-item">
-                                <div class="day-header">{{ race.schedule.race.date }}</div>
-                                <div class="session">
-                                    <span class="session-name">Race</span>
-                                    <span class="session-time">{{ race.schedule.race.time }}</span>
-                                </div>
-                            </div>
+                
                             <div class="schedule-item">
                                 <div class="day-header">{{ race.schedule.sprint.date }}</div>
                                 <div class="session">
@@ -88,9 +129,6 @@
                                     <span class="session-time">{{ race.schedule.sprint.time }}</span>
                                 </div>
                             </div>
-                            
-                        {% else %}
-                            <!-- Normal Race Weekend Format -->
                             <div class="schedule-item">
                                 <div class="day-header">{{ race.schedule.race.date }}</div>
                                 <div class="session">
@@ -98,17 +136,9 @@
                                     <span class="session-time">{{ race.schedule.race.time }}</span>
                                 </div>
                             </div>
-                            <div class="schedule-item">
-                                <div class="day-header">{{ race.schedule.qualifying.date }}</div>
-                                <div class="session">
-                                    <span class="session-name">Qualifying</span>
-                                    <span class="session-time">{{ race.schedule.qualifying.time }}</span>
-                                </div>
-                                <div class="session">
-                                    <span class="session-name">Practice 3</span>
-                                    <span class="session-time">{{ race.schedule.practice3.time }}</span>
-                                </div>
-                            </div>
+                            
+                        {% else %}
+                            <!-- Normal Race Weekend Format -->
                             <div class="schedule-item">
                                 <div class="day-header">{{ race.schedule.practice1.date }}</div>
                                 <div class="session">
@@ -120,6 +150,26 @@
                                     <span class="session-time">{{ race.schedule.practice2.time }}</span>
                                 </div>
                             </div>
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.qualifying.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Practice 3</span>
+                                    <span class="session-time">{{ race.schedule.practice3.time }}</span>
+                                </div>
+                                <div class="session">
+                                    <span class="session-name">Qualifying</span>
+                                    <span class="session-time">{{ race.schedule.qualifying.time }}</span>
+                                </div>
+                                
+                            </div>
+                            <div class="schedule-item">
+                                <div class="day-header">{{ race.schedule.race.date }}</div>
+                                <div class="session">
+                                    <span class="session-name">Race</span>
+                                    <span class="session-time">{{ race.schedule.race.time }}</span>
+                                </div>
+                            </div>
+                            
                         {% endif %}
                     </div>
                 </div>
