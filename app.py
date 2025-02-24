@@ -307,7 +307,160 @@ f1_races = [
         },
         "sprint": False,
         "image": "static/images/monaco.jpg"
-    }
+    },
+    {
+    "round": 9,
+    "name": "Spanish Grand Prix",
+    "circuit": "Circuit de Barcelona-Catalunya",
+    "location": "Barcelona",
+    "date": "2025-05-30",
+    "end_date": "2025-06-01",
+    "display_date": "30 May - 1 June",
+    "schedule": {
+        "race": {
+            "date": "1 June",
+            "calc_date": "2025-06-01",
+            "time": "14:00"
+        },
+        "qualifying": {
+            "date": "31 May",
+            "calc_date": "2025-05-31",
+            "time": "15:00 - 16:00"
+        },
+        "practice1": {
+            "date": "30 May",
+            "calc_date": "2025-05-30",
+            "time": "12:30 - 13:30"
+        },
+        "practice2": {
+            "date": "30 May",
+            "calc_date": "2025-05-30",
+            "time": "16:00 - 17:00"
+        },
+        "practice3": {
+            "date": "31 May",
+            "calc_date": "2025-05-31",
+            "time": "11:30 - 12:30"
+        }
+    },
+    "sprint": False,
+    "image": "static/images/barcelona.jpg"
+},
+{
+    "round": 10,
+    "name": "Canadian Grand Prix",
+    "circuit": "Circuit Gilles Villeneuve",
+    "location": "Montreal",
+    "date": "2025-06-13",
+    "end_date": "2025-06-15",
+    "display_date": "13 June - 15 June",
+    "schedule": {
+        "race": {
+            "date": "15 June",
+            "calc_date": "2025-06-15",
+            "time": "18:00"
+        },
+        "qualifying": {
+            "date": "14 June",
+            "calc_date": "2025-06-14",
+            "time": "19:00 - 20:00"
+        },
+        "practice1": {
+            "date": "13 June",
+            "calc_date": "2025-06-13",
+            "time": "17:30 - 18:30"
+        },
+        "practice2": {
+            "date": "13 June",
+            "calc_date": "2025-06-13",
+            "time": "21:00 - 22:00"
+        },
+        "practice3": {
+            "date": "14 June",
+            "calc_date": "2025-06-14",
+            "time": "16:30 - 17:30"
+        }
+    },
+    "sprint": False,
+    "image": "static/images/montreal.jpg"
+},
+{
+    "round": 11,
+    "name": "Austrian Grand Prix",
+    "circuit": "Red Bull Ring",
+    "location": "Spielberg",
+    "date": "2025-06-27",
+    "end_date": "2025-06-29",
+    "display_date": "27 June - 29 June",
+    "schedule": {
+        "race": {
+            "date": "29 June",
+            "calc_date": "2025-06-29",
+            "time": "14:00"
+        },
+        "qualifying": {
+            "date": "28 June",
+            "calc_date": "2025-06-28",
+            "time": "15:00 - 16:00"
+        },
+        "practice1": {
+            "date": "27 June",
+            "calc_date": "2025-06-27",
+            "time": "12:30 - 13:30"
+        },
+        "practice2": {
+            "date": "27 June",
+            "calc_date": "2025-06-27",
+            "time": "16:00 - 17:00"
+        },
+        "practice3": {
+            "date": "28 June",
+            "calc_date": "2025-06-28",
+            "time": "11:30 - 12:30"
+        }
+    },
+    "sprint": False,
+    "image": "static/images/spielberg.jpg"
+},
+{
+    "round": 12,
+    "name": "British Grand Prix",
+    "circuit": "Silverstone Circuit",
+    "location": "Silverstone",
+    "date": "2025-07-04",
+    "end_date": "2025-07-06",
+    "display_date": "4 July - 6 July",
+    "schedule": {
+        "race": {
+            "date": "6 July",
+            "calc_date": "2025-07-06",
+            "time": "14:00"
+        },
+        "qualifying": {
+            "date": "5 July",
+            "calc_date": "2025-07-05",
+            "time": "15:00 - 16:00"
+        },
+        "practice1": {
+            "date": "4 July",
+            "calc_date": "2025-07-04",
+            "time": "12:30 - 13:30"
+        },
+        "practice2": {
+            "date": "4 July",
+            "calc_date": "2025-07-04",
+            "time": "16:00 - 17:00"
+        },
+        "practice3": {
+            "date": "5 July",
+            "calc_date": "2025-07-05",
+            "time": "11:30 - 12:30"
+        }
+    },
+    "sprint": False,
+    "image": "static/images/silverstone.jpg"
+}
+    
 ]
 
 @app.route('/')
