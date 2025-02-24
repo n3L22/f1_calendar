@@ -31,7 +31,7 @@ All times are shown in UTC/GMT format.
 
 1. Clone this repository
 2. Install dependencies
-3. Run the application
+3. Run the application (app.py)
 4. Visit http://localhost:5000 in your browser
 
 
